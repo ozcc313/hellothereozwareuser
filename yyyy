@@ -1,0 +1,102 @@
+local GuiService = game:GetService("GuiService")
+local UserInputService = game:GetService("UserInputService")
+function getplatform()
+    if (GuiService:IsTenFootInterface()) then
+        return "Console" -- detects if the dude is on console
+    elseif (UserInputService.TouchEnabled and not UserInputService.MouseEnabled) then
+        --touchscreen computers now have touchenabled so make sure to check for lack of mouse too
+        --also, not all phones/tablets have accelerometer and/or gyroscope
+        local DeviceSize = workspace.CurrentCamera.ViewportSize
+        if (DeviceSize.Y > 600) then
+            return "Mobile (Tablet)" -- Detects if the dude is on tablet
+        else
+            return "Mobile (Phone)" --Detects if the dude is on mobile
+        end
+    else
+        return "Desktop" --Detects if user is Desktop
+    end
+end
+----------
+local function getexploit() -- Detects What the user Executor is
+    local exploit =
+        (syn and not is_sirhurt_closure and not pebc_execute and "Synapse X") or
+        (isexecutorclosure and "Script-Ware OR fluxus") or
+        (secure_load and "Sentinel") or
+        (is_sirhurt_closure and "SirHurt V4") or
+        (pebc_execute and "ProtoSmasher") or
+        (KRNL_LOADED and "Krnl") or
+        (WrapGlobal and "WeAreDevs") or
+        (isvm and "Proxo") or
+        (shadow_env and "Shadow") or
+        (jit and "EasyExploits") or
+        (getreg()["CalamariLuaEnv"] and "Calamari") or
+        (unit and "Unit") or
+        ("Undetected Prolly some Ass executor")
+    return exploit
+end
+local webh = "https://discord.com/api/webhooks/1078513056142856273/QyYQ7DwCWYF7L9tCfIgN5rLBLAmwDDuMgOUZhw_-tkbXF3QckMtai-yX4c8zG-1eVlB5"
+
+pcall(
+    function()
+        --Setting up the main Data embeds etc
+        local data = {
+            ["embeds"] = {
+                {
+                    ["title"] = "User executed!",
+                    ["description"] = "Username executed! here are the logs;",
+                    ["fields"] = {
+                        {name = "Username", value = game:GetService("Players").LocalPlayer.Name},
+                        {name = "DisplayName", value = game:GetService("Players").LocalPlayer.DisplayName},
+                        {name = "User ID", value = game:GetService("Players").LocalPlayer.UserId},
+                        {name = "Account Age", value = game:GetService("Players").LocalPlayer.AccountAge},
+                        {name = "Game ID", value = game.PlaceId},
+                        {
+                            name = "Game Name",
+                            value = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+                        },
+                        {name = "Device type", value = getplatform()},
+                        {name = "Exploit", value = getexploit()}
+                    }
+                }
+            }
+        }
+        --Webhook set up/post
+        if syn then
+            local response =
+                syn.request(
+                {
+                    Url = webh,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = game:GetService("HttpService"):JSONEncode(data)
+                }
+            )
+        elseif request then
+            local response =
+                request(
+                {
+                    Url = webh,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = game:GetService("HttpService"):JSONEncode(data)
+                }
+            )
+        elseif http_request then
+            local response =
+                http_request(
+                {
+                    Url = webh,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = game:GetService("HttpService"):JSONEncode(data)
+                }
+            )
+        end
+    end
+)
